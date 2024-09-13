@@ -2,7 +2,6 @@ use crate::data::MerkleTreeData;
 use crate::hash_pair::sort_hash_pair;
 use crate::proof::MerkleTreeProof;
 use crate::root::MerkleTreeRoot;
-use near_sdk::borsh::BorshSerialize;
 use near_sdk::env::keccak256_array;
 
 pub mod data;
@@ -47,8 +46,7 @@ impl MerkleTree {
             i -= 1;
 
             nodes[i] = keccak256_array(
-                &sort_hash_pair(&nodes[(i << 1) + 1], &nodes[(i + 1) << 1])
-                    .try_to_vec()
+                &borsh::to_vec(&sort_hash_pair(&nodes[(i << 1) + 1], &nodes[(i + 1) << 1]))
                     .unwrap(),
             );
         }

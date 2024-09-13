@@ -19,7 +19,7 @@ impl MerkleTreeRoot {
         let mut hash = keccak256_array(data);
 
         for second_hash in proof {
-            hash = keccak256_array(&sort_hash_pair(&hash, second_hash).try_to_vec().unwrap());
+            hash = keccak256_array(&borsh::to_vec(&sort_hash_pair(&hash, second_hash)).unwrap());
         }
 
         self.hash == hash
